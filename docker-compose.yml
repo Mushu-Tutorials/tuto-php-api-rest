@@ -1,0 +1,38 @@
+version: "2"
+
+services:
+  php:
+    # build: .
+    image: registry.gitlab.com/cgpsoft/process-and-projects
+    # image: php:7.4-apache
+    command: php -S 0.0.0.0:8080 -t /var/www/html/public
+    # command: php -S 0.0.0.0:8000 /app/index.php
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - "8000:8080"
+    links:
+      - dbapi
+
+  dbapi:
+    image: mariadb
+    # restart: always
+    ports:
+      - "30:3306"
+    env_file:
+      - .env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes:
+      - ./etc/mysqlfiles:/docker-entrypoint-initdb.d
+    #   - ./mysql/mariadb:/var/lib/mysql
+
+  composer:
+    # restart: 'no'
+    image: composer/composer:php7
+    command: install
+    volumes:
+      - .:/app
