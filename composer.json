@@ -1,0 +1,13 @@
+{
+    "name": "ubuntu/src",
+    "description": "php api rest from https://developer.okta.com/blog/2019/03/08/simple-rest-api-php",
+    "require": {
+        "vlucas/phpdotenv": "^2.4"
+
+    },
+    "autoload": {
+        "psr-4": {
+            "Src\\": "src/"
+        }
+    }
+}
